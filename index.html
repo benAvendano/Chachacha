@@ -1,0 +1,682 @@
+<!-- por si ponen creativo le pueden poner imagenes para que sea mas exotico XD, si no entienden diganle a la ia que se lo explique 👍-->
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Chachachá — Jósean Log</title>
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;500;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #1a1d35 0%, #0f1124 30%, #141729 70%, #0e0f13 100%);
+      min-height: 100vh;
+      overflow: hidden;
+      position: relative;
+    }
+    
+    .golden-circle {
+      position: fixed;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 1;
+    }
+    
+    .golden-circle::before,
+    .golden-circle::after {
+      content: '';
+      position: absolute;
+      border-radius: 50%;
+      border: 1px solid rgba(255, 223, 110, 0.3);
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+    
+    .golden-circle::before {
+      width: 200%;
+      height: 200%;
+      animation: rotate 20s linear infinite;
+    }
+    
+    .golden-circle::after {
+      width: 300%;
+      height: 300%;
+      border-color: rgba(255, 223, 110, 0.2);
+      animation: rotate 30s linear infinite reverse;
+    }
+    
+    .golden-core {
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle, #ffdf6e 30%, #e6c960 70%, #d4b84d 100%);
+      border-radius: 50%;
+      box-shadow: 0 0 20px rgba(255, 223, 110, 0.6);
+      animation: pulse 3s ease-in-out infinite alternate;
+    }
+    
+    @keyframes rotate {
+      from { transform: translate(-50%, -50%) rotate(0deg); }
+      to { transform: translate(-50%, -50%) rotate(360deg); }
+    }
+    
+    @keyframes pulse {
+      0% { transform: scale(1); box-shadow: 0 0 20px rgba(255, 223, 110, 0.6); }
+      100% { transform: scale(1.1); box-shadow: 0 0 30px rgba(255, 223, 110, 0.8); }
+    }
+    
+    .white-star {
+      position: fixed;
+      background: #ffffff;
+      border-radius: 50%;
+      pointer-events: none;
+      opacity: 0.8;
+      z-index: 1;
+      animation: twinkle 2s ease-in-out infinite alternate;
+    }
+    
+    @keyframes twinkle {
+      0% { opacity: 0.6; transform: scale(1); }
+      100% { opacity: 1; transform: scale(1.2); }
+    }
+    
+    .header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 10;
+      text-align: center;
+      padding: 30px 20px 20px;
+      background: linear-gradient(180deg, rgba(15, 17, 36, 0.9) 0%, rgba(15, 17, 36, 0.7) 70%, transparent 100%);
+      backdrop-filter: blur(10px);
+    }
+    
+    .title {
+      font-family: 'Dancing Script', cursive;
+      font-size: clamp(45px, 8vw, 85px);
+      font-weight: 700;
+      color: #ffffff;
+      text-align: center;
+      margin-bottom: 8px;
+      letter-spacing: 2px;
+      text-shadow: 
+        0 0 25px rgba(255, 223, 110, 0.5),
+        0 4px 35px rgba(0, 0, 0, 0.7);
+      position: relative;
+    }
+    
+    .artist {
+      font-family: 'Poppins', sans-serif;
+      font-size: clamp(12px, 2.2vw, 20px);
+      color: #9aa7b3;
+      text-align: center;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      font-weight: 300;
+      opacity: 0.85;
+    }
+    
+    .start-message {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 15;
+      background: rgba(15, 17, 36, 0.95);
+      padding: 30px 40px;
+      border-radius: 20px;
+      text-align: center;
+      border: 2px solid rgba(255, 223, 110, 0.3);
+      backdrop-filter: blur(15px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+      transition: all 0.5s ease;
+    }
+    
+    .start-message.hidden {
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(0.9);
+      pointer-events: none;
+    }
+    
+    .start-button {
+      background: linear-gradient(135deg, #ffdf6e 0%, #4a7c59 100%);
+      color: #0f1124;
+      border: none;
+      padding: 15px 30px;
+      border-radius: 50px;
+      font-family: 'Poppins', sans-serif;
+      font-weight: 600;
+      font-size: 16px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    
+    .start-text {
+      color: #ffffff;
+      margin-bottom: 20px;
+      font-size: 18px;
+      font-weight: 300;
+    }
+    
+    .error-message {
+      color: #ff6b6b;
+      margin-top: 15px;
+      font-size: 14px;
+      font-style: italic;
+    }
+    
+    .container {
+      position: relative;
+      z-index: 3;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 160px 20px 80px;
+    }
+    
+    .lyrics-container {
+      max-width: 900px;
+      width: 100%;
+      text-align: center;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 200px;
+    }
+    
+    .lyrics-line {
+      font-family: 'Dancing Script', cursive;;
+      font-size: clamp(28px, 6vw, 56px);
+      line-height: 1.2;
+      color: rgba(255, 255, 255, 0.85);
+      opacity: 0;
+      transform: translateY(50px) scale(0.9);
+      transition: all 1s cubic-bezier(0.25, 0.8, 0.25, 1);
+      font-weight: 400;
+      text-shadow: 0 2px 15px rgba(0, 0, 0, 0.4);
+      position: absolute;
+      width: 100%;
+      letter-spacing: 0.5px;
+      text-align: center;
+      pointer-events: none;
+    }
+    
+    .lyrics-line.active {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+      color: #ffdf6e;
+      font-weight: 500;
+      text-shadow: 
+        0 0 25px rgba(255, 223, 110, 0.5),
+        0 2px 20px rgba(0, 0, 0, 0.4);
+      animation: glow 3s ease-in-out infinite alternate;
+    }
+    
+    .lyrics-line.exiting {
+      opacity: 0;
+      transform: translateY(-30px) scale(0.95);
+      transition: all 0.6s ease-in;
+    }
+    
+    .lyrics-line[data-chorus="true"] {
+      font-weight: 600;
+      font-size: clamp(32px, 6.5vw, 62px);
+    }
+    
+    .lyrics-line[data-chorus="true"].active {
+      color: #e79a00;
+      text-shadow: 
+        0 0 30px rgba(255, 217, 0, 0.6),
+        0 2px 25px rgba(0, 0, 0, 0.4);
+      animation: glow-green 3s ease-in-out infinite alternate;
+    }
+    
+    @keyframes glow {
+      0% { text-shadow: 0 0 25px rgba(255, 223, 110, 0.5), 0 2px 20px rgba(0, 0, 0, 0.4); }
+      100% { text-shadow: 0 0 35px rgba(255, 223, 110, 0.7), 0 2px 25px rgba(0, 0, 0, 0.4); }
+    }
+    
+    @keyframes glow-green {
+      0% { text-shadow: 0 0 30px rgba(74, 124, 89, 0.6), 0 2px 25px rgba(0, 0, 0, 0.4); }
+      100% { text-shadow: 0 0 40px rgba(74, 124, 89, 0.8), 0 2px 30px rgba(0, 0, 0, 0.4); }
+    }
+    
+    .progress-indicator {
+      position: fixed;
+      bottom: 25px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 250px;
+      height: 3px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 2px;
+      z-index: 4;
+      overflow: hidden;
+    }
+    
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #ffdf6e 0%, #4a7c59 50%, #ffdf6e 100%);
+      border-radius: 2px;
+      transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 
+        0 0 15px rgba(255, 223, 110, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+      position: relative;
+    }
+    
+    .progress-bar::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.4) 50%, transparent 100%);
+      animation: shimmer-bar 2s infinite;
+    }
+    
+    @keyframes shimmer-bar {
+      0% { left: -100%; }
+      100% { left: 100%; }
+    }
+    
+    @media (max-width: 768px) {
+      .header {
+        padding: 25px 15px 15px;
+      }
+      .container {
+        padding: 140px 15px 70px;
+      }
+      .lyrics-container {
+        min-height: 150px;
+      }
+      .start-message {
+        padding: 25px 30px;
+        margin: 0 20px;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .header {
+        padding: 20px 12px 12px;
+      }
+      .container {
+        padding: 120px 12px 60px;
+      }
+      .progress-indicator {
+        width: 200px;
+      }
+      .artist {
+        letter-spacing: 2px;
+      }
+      .start-message {
+        padding: 20px 25px;
+        margin: 0 15px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1 class="title">Chachachá</h1>
+    <p class="artist">JÓSEAN LOG</p>
+  </div>
+  
+  <div class="start-message" id="startMessage">
+    <div class="start-text">Toca para comenzar la experiencia</div> <!-- Aca si quieren lo eliminan o le cambian a su gusto -->
+    <button class="start-button" id="startButton">▶ Reproducir</button>
+    <div class="error-message" id="errorMessage" style="display: none;"></div>
+  </div>
+  
+  <div class="container">
+    <div class="lyrics-container" id="lyricsContainer">
+      <!-- esto lo pone el javascript no pongan nada XD -->
+    </div>
+  </div>
+  
+  <div class="progress-indicator">
+    <div class="progress-bar" id="progressBar"></div>
+  </div>
+  
+  <audio id="audioPlayer" preload="auto" style="display: none;">
+    <source src="chachacha.mp3" type="audio/mpeg">
+    Tu navegador no soporta audio HTML5.
+  </audio>
+
+
+  <script>
+    // Unica nota lo demas meda paja XD, (t: 18.0) el 18 es el segungundo y el 0 la milesima por si quieren que sea mas preciso ustedes se dan la paja de hacerlo kkkk
+    const LYRICS = [
+      { t: 18.0, l: "Dame de tu vida y de tu tiempo", chorus: false },
+      { t: 24.0,  l: "Suficientes para ver", chorus: false },
+      { t: 27.0,  l: "Dentro de tus ojos el momento", chorus: false },
+      { t: 33.0,  l: "Que me obligue a renacer", chorus: false },
+      { t: 37.0,  l: "Dame vida y dame aliento", chorus: false },
+      { t: 41.0,  l: "Que yo ya perdí el conocimiento", chorus: false },
+      { t: 46.1,  l: "Solo quédate un momento", chorus: false },
+      { t: 50.2,  l: "Hasta evaporarnos en el viento", chorus: false },
+      { t: 54.0,  l: "No hay motivos", chorus: true },
+      { t: 56.0,  l: "Para decirnos adiós tan pronto", chorus: true },
+      { t: 62.0,  l: "Sigo vivo", chorus: true },
+      { t: 66.0,  l: "Créemelo, mi amor, no soy tan tonto", chorus: true },
+      { t: 71.0,  l: "Si tú quisieras esta noche", chorus: true },
+      { t: 75.0,  l: "Ir a bailar un chachachá", chorus: true },
+      { t: 80.0,  l: "Yo te puedo enamorar", chorus: false },
+      { t: 93.0,  l: "Dame de tu vida y de tu tiempo", chorus: false },
+      { t: 98.0,  l: "Que te quiero conocer", chorus: false },
+      { t: 100.8,  l: "Déjame sentir el movimiento", chorus: false },
+      { t: 107.0,  l: "De tu cuerpo al florecer", chorus: false },
+      { t: 110.0,  l: "Dame vida y dame aliento", chorus: false },
+      { t: 115.0,  l: "Que yo ya perdí el conocimiento", chorus: false },
+      { t: 119.0,  l: "Solo quédate un momento", chorus: false },
+      { t: 124.0, l: "Hasta evaporarnos en el viento", chorus: false },
+      { t: 127.0, l: "No hay motivos", chorus: true },
+      { t: 130.0, l: "Para decirnos adiós tan pronto", chorus: true },
+      { t: 137.0, l: "Sigo vivo", chorus: true },
+      { t: 139.0, l: "Créemelo, mi amor, no soy tan tonto", chorus: true },
+      { t: 145.0, l: "Si tú quisieras esta noche", chorus: true },
+      { t: 148.2, l: "Ir a bailar un chachachá", chorus: true },
+      { t: 154.0, l: "Yo te puedo enamorar", chorus: true },
+      { t: 174.0, l: "No hay motivos", chorus: true },
+      { t: 176.0, l: "Para decirnos adiós tan pronto", chorus: true },
+      { t: 182.3, l: "Sigo vivo", chorus: true },
+      { t: 185.0, l: "Créemelo, mi amor, no soy tan tonto", chorus: true },
+      { t: 191.0, l: "Si tú quisieras esta noche", chorus: true },
+      { t: 194.0, l: "Ir a bailar un chachachá", chorus: true },
+      { t: 201.0, l: "Yo te puedo enamorar", chorus: true }
+    ];
+
+    let audioPlayer;
+    let currentLineIndex = -1;
+    let duration = 0;
+    let currentLineElement = null;
+    let nextLineTimeout = null;
+    let hasStarted = false;
+    let animationFrame;
+
+    function createGoldenCircles() {
+      const goldenPositions = [
+        { top: '15%', left: '20%', size: '15px' },
+        { top: '20%', right: '25%', size: '18px' },
+        { bottom: '30%', left: '15%', size: '12px' },
+        { bottom: '25%', right: '20%', size: '16px' },
+        { top: '60%', left: '25%', size: '14px' },
+        { top: '45%', right: '30%', size: '20px' }
+      ];
+
+      goldenPositions.forEach((pos) => {
+        const circle = document.createElement('div');
+        circle.className = 'golden-circle';
+        circle.style.width = pos.size;
+        circle.style.height = pos.size;
+        
+        Object.keys(pos).forEach(key => {
+          if (key !== 'size') {
+            circle.style[key] = pos[key];
+          }
+        });
+        
+        const core = document.createElement('div');
+        core.className = 'golden-core';
+        circle.appendChild(core);
+        
+        document.body.appendChild(circle);
+      });
+    }
+
+    function createWhiteStars() {
+      const starPositions = [
+        { top: '10%', left: '10%', size: '2px' },
+        { top: '8%', left: '30%', size: '1.5px' },
+        { top: '12%', left: '50%', size: '2px' },
+        { top: '15%', left: '70%', size: '1px' },
+        { top: '5%', left: '85%', size: '2.5px' },
+        { top: '25%', left: '5%', size: '1.5px' },
+        { top: '30%', left: '35%', size: '2px' },
+        { top: '28%', left: '65%', size: '1px' },
+        { top: '35%', left: '90%', size: '2px' },
+        { top: '45%', left: '8%', size: '1.5px' },
+        { top: '50%', left: '45%', size: '2.5px' },
+        { top: '55%', left: '75%', size: '1px' },
+        { top: '40%', left: '55%', size: '2px' },
+        { top: '65%', left: '12%', size: '1.5px' },
+        { top: '70%', left: '40%', size: '2px' },
+        { top: '75%', left: '70%', size: '1px' },
+        { top: '80%', left: '25%', size: '2.5px' },
+        { top: '85%', left: '85%', size: '1.5px' },
+        { top: '90%', left: '15%', size: '2px' },
+        { top: '95%', left: '60%', size: '1px' },
+        { bottom: '5%', left: '35%', size: '2px' },
+        { bottom: '10%', left: '80%', size: '1.5px' },
+        { bottom: '15%', right: '10%', size: '2.5px' },
+        { bottom: '20%', right: '40%', size: '1px' },
+        { bottom: '25%', right: '70%', size: '2px' },
+        { bottom: '35%', right: '5%', size: '1.5px' },
+        { bottom: '40%', right: '25%', size: '2px' },
+        { bottom: '45%', right: '55%', size: '1px' },
+        { bottom: '50%', right: '85%', size: '2.5px' },
+        { bottom: '60%', right: '15%', size: '1.5px' },
+        { top: '18%', right: '8%', size: '2px' },
+        { top: '22%', right: '35%', size: '1px' },
+        { top: '38%', right: '12%', size: '2.5px' },
+        { top: '42%', right: '50%', size: '1.5px' },
+        { top: '58%', right: '18%', size: '2px' },
+        { top: '62%', right: '45%', size: '1px' },
+        { top: '78%', right: '8%', size: '2px' },
+        { top: '88%', right: '30%', size: '1.5px' },
+        { top: '3%', left: '40%', size: '1px' },
+        { top: '7%', left: '60%', size: '2px' },
+        { top: '33%', left: '15%', size: '1.5px' },
+        { top: '47%', left: '80%', size: '2.5px' },
+        { top: '63%', left: '30%', size: '1px' },
+        { top: '73%', left: '85%', size: '2px' },
+        { top: '83%', left: '50%', size: '1.5px' },
+        { top: '93%', left: '10%', size: '2px' },
+        { bottom: '3%', right: '20%', size: '1px' },
+        { bottom: '8%', right: '60%', size: '2.5px' },
+        { bottom: '18%', left: '75%', size: '1.5px' },
+        { bottom: '28%', left: '95%', size: '2px' }
+      ];
+
+      starPositions.forEach((pos) => {
+        const star = document.createElement('div');
+        star.className = 'white-star';
+        star.style.width = pos.size;
+        star.style.height = pos.size;
+        
+        Object.keys(pos).forEach(key => {
+          if (key !== 'size') {
+            star.style[key] = pos[key];
+          }
+        });
+        
+        star.style.animationDelay = Math.random() * 2 + 's';
+        
+        document.body.appendChild(star);
+      });
+    }
+
+    function createLyricsElements() {
+      const container = document.getElementById('lyricsContainer');
+      container.innerHTML = '';
+      
+      LYRICS.forEach((line, index) => {
+        const lineElement = document.createElement('div');
+        lineElement.className = 'lyrics-line';
+        lineElement.textContent = line.l;
+        lineElement.dataset.time = line.t;
+        lineElement.dataset.index = index;
+        lineElement.dataset.chorus = line.chorus;
+        container.appendChild(lineElement);
+      });
+    }
+
+    function showError(message) {
+      const errorElement = document.getElementById('errorMessage');
+      errorElement.textContent = message;
+      errorElement.style.display = 'block';
+    }
+
+    function startPlayback() {
+      if (hasStarted) return;
+      
+      hasStarted = true;
+      const startMessage = document.getElementById('startMessage');
+      
+      audioPlayer.play().then(() => {
+        startMessage.classList.add('hidden');
+        sync();
+      }).catch((error) => {
+        console.error('Error al reproducir audio:', error);
+        showError('No se pudo cargar el archivo de audio. Asegúrate de que "chachacha.mp3" esté en la misma carpeta.');
+        hasStarted = false;
+      });
+    }
+
+    function getExitTime(currentIndex) {
+      if (currentIndex >= 0 && currentIndex < LYRICS.length - 1) {
+        const currentTime = LYRICS[currentIndex].t;
+        const nextTime = LYRICS[currentIndex + 1].t;
+        const gap = nextTime - currentTime;
+        
+        const exitOffset = gap < 2 ? 0.8 : 1.2;
+        return nextTime - exitOffset;
+      }
+      return null;
+    }
+
+    function showLine(index) {
+      const lines = document.querySelectorAll('.lyrics-line');
+      
+      if (index >= 0 && index < lines.length) {
+        currentLineElement = lines[index];
+        currentLineElement.classList.add('active');
+        const exitTime = getExitTime(index);
+        if (exitTime) {
+          clearTimeout(nextLineTimeout);
+          const delay = (exitTime - LYRICS[index].t) * 1000;
+          nextLineTimeout = setTimeout(() => {
+            if (currentLineElement) {
+              currentLineElement.classList.add('exiting');
+              currentLineElement.classList.remove('active');
+            }
+          }, delay);
+        }
+      }
+    }
+
+    function clearPreviousLine() {
+      const lines = document.querySelectorAll('.lyrics-line');
+      lines.forEach(line => {
+        line.classList.remove('active', 'exiting');
+      });
+      clearTimeout(nextLineTimeout);
+    }
+
+    function updateActiveLine(currentTime) {
+      let newActiveIndex = -1;
+      
+      for (let i = 0; i < LYRICS.length; i++) {
+        if (currentTime >= LYRICS[i].t - 0.3) {
+          newActiveIndex = i;
+        } else {
+          break;
+        }
+      }
+      
+      if (newActiveIndex !== currentLineIndex && newActiveIndex >= 0) {
+        clearPreviousLine();
+        currentLineIndex = newActiveIndex;
+        
+        setTimeout(() => {
+          showLine(newActiveIndex);
+        }, 50);
+      }
+    }
+
+    function updateProgress(currentTime) {
+      const progressBar = document.getElementById('progressBar');
+      if (duration > 0) {
+        const progress = (currentTime / duration) * 100;
+        progressBar.style.width = `${Math.min(progress, 100)}%`;
+      }
+    }
+
+    function sync() {
+      if (audioPlayer && !audioPlayer.paused && !audioPlayer.ended) {
+        const currentTime = audioPlayer.currentTime;
+        updateActiveLine(currentTime);
+        updateProgress(currentTime);
+      }
+      
+      if (hasStarted) {
+        animationFrame = requestAnimationFrame(sync);
+      }
+    }
+
+    function handleAudioEnd() {
+      setTimeout(() => {
+        audioPlayer.currentTime = 0;
+        audioPlayer.play();
+        // Resetear letras
+        currentLineIndex = -1;
+        currentLineElement = null;
+        clearTimeout(nextLineTimeout);
+        clearPreviousLine();
+      }, 3000);
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      audioPlayer = document.getElementById('audioPlayer');
+      
+      createGoldenCircles();
+      createWhiteStars();
+      audioPlayer.addEventListener('loadedmetadata', () => {
+        duration = audioPlayer.duration;
+        console.log('Audio cargado, duración:', duration);
+      });
+      
+      audioPlayer.addEventListener('ended', handleAudioEnd);
+      
+      audioPlayer.addEventListener('error', (e) => {
+        console.error('Error de audio:', e);
+        showError('Error al cargar el archivo de audio. Verifica que el archivo exista y sea válido.');
+      });
+      
+      createLyricsElements();
+      
+      document.getElementById('startButton').addEventListener('click', startPlayback);
+      
+      document.addEventListener('click', function(e) {
+        if (e.target.id === 'startButton') return;
+        
+        if (!hasStarted) {
+          startPlayback();
+        } else if (audioPlayer) {
+          if (audioPlayer.paused) {
+            audioPlayer.play();
+            sync();
+          } else {
+            audioPlayer.pause();
+            cancelAnimationFrame(animationFrame);
+          }
+        }
+      });
+    });
+  </script>
+</body>
+</html>
